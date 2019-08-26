@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Photo</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Josefin+Sans:300i,400,700" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/resources/fonts/icomoon/style.css}">
+    <link rel="stylesheet" th:href="@{/resources/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/resources/css/magnific-popup.css}">
+    <link rel="stylesheet" th:href="@{/resources/css/jquery-ui.css}">
+    <link rel="stylesheet" th:href="@{/resources/css/owl.carousel.min.css}">
+    <link rel="stylesheet" th:href="@{/resources/css/owl.theme.default.min.css}">
+    <link rel="stylesheet" th:href="@{/resources/css/lightgallery.min.css}">
+    <link rel="stylesheet" th:href="@{/resources/css/bootstrap-datepicker.css}">
+    <link rel="stylesheet" th:href="@{/resources/fonts/flaticon/font/flaticon.css}">
+    <link rel="stylesheet" th:href="@{/resources/css/swiper.css}">
+    <link rel="stylesheet" th:href="@{/resources/css/aos.css}">
+    <link rel="stylesheet" th:href="@{/resources/css/style.css}">
+</head>
+
+<body>
+
+<div class="site-wrap">
+    <div class="site-mobile-menu">
+        <div class="site-mobile-menu-header">
+            <div class="site-mobile-menu-close mt-3">
+                <span class="icon-close2 js-menu-toggle"></span>
+            </div>
+        </div>
+        <div class="site-mobile-menu-body"></div>
+    </div>
+
+    <header class="site-navbar py-3 border-bottom" role="banner">
+        <div class="container-fluid">
+            <div class="row align-items-center">
+                <div class="col-6 col-xl-2" data-aos="fade-down">
+                    <h1 class="mb-0"><a href="/index" class="text-black h2 mb-0">Hoai Phung</a></h1>
+                </div>
+                <div class="col-10 col-md-8 d-none d-xl-block" data-aos="fade-down">
+                    <nav class="site-navigation position-relative text-right text-lg-center" role="navigation">
+
+                        <ul class="site-menu js-clone-nav mx-auto d-none d-lg-block">
+                            <li><a href="/index">Home</a></li>
+                            <li class="has-children">
+                                <a href="/admin/categories">Album</a>
+                                <ul class="dropdown">
+                                    <th:block th:each="cateList : ${cateList}">
+                                        <li><a th:href="@{/admin/view-category/__${cateList.id}__ }"
+                                               th:text="${cateList.name}"></a></li>
+                                    </th:block>
+                                </ul>
+                            </li>
+                            <li class="active"><a href="/admin/galleries">Gallery</a></li>
+                            <li class="has-children">
+                                <a href="" data-toggle="modal" data-target="#modalLoginAvatar">Login</a>
+                                <ul class="dropdown">
+                                    <li><a data-toggle="modal" data-target="#modalLoginAvatarRegister">Register</a></li>
+                                    <th:block th:unless="${#lists.isEmpty(session.myUser)}">
+                                        <li><a href="/logout">Logout</a></li>
+                                    </th:block>
+                                </ul>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="col-6 col-xl-2 text-right" data-aos="fade-down">
+                    <div class="d-none d-xl-inline-block">
+                        <ul class="site-menu js-clone-nav ml-auto list-unstyled d-flex text-right mb-0"
+                            data-class="social">
+                            <li>
+                                <a href="#" class="pl-0 pr-3"><span class="icon-facebook"></span></a>
+                            </li>
+                            <li>
+                                <a href="#" class="pl-3 pr-3"><span class="icon-twitter"></span></a>
+                            </li>
+                            <li>
+                                <a href="#" class="pl-3 pr-3"><span class="icon-instagram"></span></a>
+                            </li>
+                            <li>
+                                <a href="#" class="pl-3 pr-3"><span class="icon-youtube-play"></span></a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="d-inline-block d-xl-none ml-md-0 mr-auto py-3" style="position: relative; top: 3px;"><a
+                            href="#" class="site-menu-toggle js-menu-toggle text-black"><span
+                            class="icon-menu h3"></span></a></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+            <div class="container-fluid">
+                <div class="orders">
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <button type="button" class="btn btn-outline-success btn-block m-l-10 m-b-10"><a
+                                            href="/admin/create-gallery">Add New Gallery</a>
+                                    </button>
+                                </div>
+                                <div class="card-body--">
+                                    <div class="table-stats order-table ov-h">
+                                        <table class="table ">
+                                            <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Description</th>
+                                                <th class="avatar">Image</th>
+                                                <th>Category</th>
+                                                <th>Date Create</th>
+                                                <th>Last Edit</th>
+                                                <th>Edit</th>
+                                                <th>Delete</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <th:block th:each="gallery : ${galleries}">
+                                                <tr>
+                                                    <td><a th:href="@{/admin/detail-gallery/__${gallery.id}__ }"
+                                                           th:text="${gallery.name}"></a></td>
+                                                    <td th:text="${gallery.decscription}"></td>
+                                                    <td class="avatar">
+                                                        <div class="round-img">
+                                                            <a href="#"><img class="sizeimg1"
+                                                                             th:src="@{'/image/' + ${gallery.image}}"
+                                                                             alt="" style="width:100px"></a>
+                                                        </div>
+                                                    </td>
+                                                    <td><a th:href="@{/admin/view-category/__${gallery.category.id}__ }"
+                                                           th:text="${gallery.category.name}"></a></td>
+                                                    <td th:text="${gallery.dateCreate}"></td>
+                                                    <td th:text="${gallery.lastEdit}"></td>
+                                                    <td>
+                                                        <button type="button"
+                                                                class="btn btn-outline-warning m-l-10 m-b-10"><a
+                                                                th:href="@{/admin/edit-gallery/__${gallery.id}__ }"><i
+                                                                class="fa fa-edit"></i></a>
+                                                        </button>
+                                                    </td>
+                                                    <td>
+                                                        <button type="button"
+                                                                class="btn btn-outline-danger m-l-10 m-b-10"><a
+                                                                th:href="@{/admin/delete-gallery/__${gallery.id}__ }"
+                                                                onclick="return confirm('Are you sure?')"><i
+                                                                class="fa fa-trash-o"></i></a>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </th:block>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+<!--footer-->
+<div class="footer py-4">
+    <div class="container-fluid text-center">
+        <p>
+            Copyright &copy;<script data-cfasync="false"
+                                    th:src="@{/resources/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js}"></script>
+            <script>document.write(new Date().getFullYear());</script>
+            All rights reserved | This template is made with <i class="icon-heart-o" aria-hidden="true"></i> by <a
+                href="https://colorlib.com" target="_blank">Colorlib</a>
+        </p>
+    </div>
+</div>
+<!---->
+<!--Modal: Login with Avatar Form-->
+<div class="modal fade" id="modalLoginAvatar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog cascading-modal modal-avatar modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <img th:src="@{/resources/images/login.png}" alt="avatar" class="rounded-circle img-responsive">
+            </div>
+            <form th:action="@{/login}" method="post">
+                <div class="modal-body text-center mb-1">
+
+                    <h5 class="mt-1 mb-2">Phung Admin</h5>
+                    <div class="md-form ml-0 mr-0">
+                        <input type="text" name="name" class="form-control form-control-sm validate ml-0"
+                               value="admin" placeholder="username" pattern="[a-z]{5,20}" title="Max Length 5-20">
+                    </div>
+
+                    <div class="md-form ml-0 mr-0 mt-2">
+                        <input type="password" name="password" class="form-control form-control-sm validate ml-0"
+                               placeholder="Enter your password" pattern="{6,20}" title="Max Length 6-20">
+                    </div>
+
+                    <div class="text-center mt-4">
+                        <button type="submit" class="btn btn-success">Login<i class="fas fa-sign-in ml-1"></i></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!--Modal: Login with Avatar Form-->
+<div class="modal fade" id="modalLoginAvatarRegister" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog cascading-modal modal-avatar modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <img th:src="@{/resources/images/login.png}" alt="avatar" class="rounded-circle img-responsive">
+            </div>
+            <form th:action="@{/register}" method="post">
+                <div class="modal-body text-center mb-1">
+
+                    <h5 class="mt-1 mb-2">Register</h5>
+                    <div class="md-form ml-0 mr-0 ">
+                        <input type="text" name="name" class="form-control form-control-sm validate ml-0"
+                               value="admin" placeholder="username" pattern="[a-z]{5,20}" title="Max Length 5-20">
+                    </div>
+
+                    <div class="md-form ml-0 mr-0 mt-2">
+                        <input type="password" name="password" class="form-control form-control-sm validate ml-0"
+                               placeholder="Enter your password" pattern="{6,20}" title="Max Length 6-20">
+                    </div>
+
+                    <div class="text-center mt-4">
+                        <button type="submit" class="btn btn-success">Register<i class="fas fa-sign-in ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!--Modal: Login with Avatar Form-->
+<script th:src="@{/resources/js/jquery-3.3.1.min.js}"></script>
+<script th:src="@{/resources/js/jquery-migrate-3.0.1.min.js}"></script>
+<script th:src="@{/resources/js/jquery-ui.js}"></script>
+<script th:src="@{/resources/js/popper.min.js}"></script>
+<script th:src="@{/resources/js/bootstrap.min.js}"></script>
+<script th:src="@{/resources/js/owl.carousel.min.js}"></script>
+<script th:src="@{/resources/js/jquery.stellar.min.js}"></script>
+<script th:src="@{/resources/js/jquery.countdown.min.js}"></script>
+<script th:src="@{/resources/js/jquery.magnific-popup.min.js}"></script>
+<script th:src="@{/resources/js/bootstrap-datepicker.min.js}"></script>
+<script th:src="@{/resources/js/swiper.min.js}"></script>
+<script th:src="@{/resources/js/aos.js}"></script>
+<script th:src="@{/resources/js/picturefill.min.js}"></script>
+<script th:src="@{/resources/js/lightgallery-all.min.js}"></script>
+<script th:src="@{/resources/js/jquery.mousewheel.min.js}"></script>
+<script th:src="@{/resources/js/main.js}"></script>
+<script>
+    $(document).ready(function () {
+        $('#lightgallery').lightGallery();
+    });
+</script>
+
+</body>
+</html>
